@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+    <script src="script.js" defer></script>
+    <title>To-Do</title>
+  </head>
+  <body>
+    <header>
+      <h1>To Do, Doing, Done!!!!!</h1>
+    </header>
+    <main class="main-container">
+      <section class="in-progress-container" id="in-progress-container">
+        <h2>In Progress???</h2>
+        <ul id="in-progress-list"></ul>
+      </section>
+
+      <section class="finished-list" id="done-list">
+        <h2>All Done!</h2>
+        <ul id="done"></ul>
+      </section>
+    </main>
+    <section class="form-container">
+      <form id="todo-form" class="todo-form">
+        <label for="todo-text">Enter new ToDo's</label>
+        <textarea id="todo-text" name="todo-text"></textarea>
+      </form>
+      <button type="submit" id="todo-submit">Save ToDo</button>
+    </section>
+  </body>
+</html>
