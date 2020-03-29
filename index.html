@@ -3,8 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./resources/css/all.css" />
     <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"
+      integrity="sha256-AdQN98MVZs44Eq2yTwtoKufhnU+uZ7v2kXnD5vqzZVo="
+      crossorigin="anonymous"
+      defer
+    ></script>
     <script src="script.js" defer></script>
     <title>To-Do</title>
   </head>
@@ -27,8 +34,10 @@
       <form id="todo-form" class="todo-form">
         <label for="todo-text">Enter new ToDo's</label>
         <textarea id="todo-text" name="todo-text"></textarea>
+        <button id="todo-submit" class="todo-button">
+          Save ToDo
+        </button>
       </form>
-      <button type="submit" id="todo-submit">Save ToDo</button>
     </section>
   </body>
 </html>

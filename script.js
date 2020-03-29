@@ -7,71 +7,98 @@ const todoForm = document.getElementById('todo-form');
 const todoText = document.getElementById('todo-text');
 const buttonSave = document.getElementById('todo-submit');
 
-const formatedDate = mSeconds => {
-  const fullDate = new Date(mSeconds);
-  const year = fullDate.getFullYear();
-  const month = fullDate.getMonth();
-  const day = fullDate.getDay();
-  const hour = fullDate.getHours();
-  let minutes = fullDate.getMinutes();
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
-  return `${year}/${month}/${day} @ ${hour}:${minutes} `;
-};
+const formatedDate = mSeconds => moment(mSeconds).format('YYYY:MM:DD @ HH:mm');
+
+// to add items to both lists
 const insertList = items => {
-  console.log(items);
   items.forEach(item => {
     const todo = document.createElement('li');
+    todo.setAttribute('data-id', `"${item._id}"`);
     if (item.completed === false) {
-      todo.innerHTML = `<div>${item.text}</div>`;
+      todo.innerHTML = `<div>${item.text}<span><button class="finish-btn"><i class="fas fa-check"></i></button></span></div>`;
+
       todoList.appendChild(todo);
     } else {
       const completedDate = formatedDate(item.completedAt);
-      // const year = completedDate.getFullYear();
-      // const day = completedDate.console.log(year);
-      todo.innerHTML = `<div>${item.text}<span>${completedDate}</span></div>`;
+      todo.innerHTML = `<div>${item.text}<span>${completedDate}</span><span><button class="trash-btn"><i class="fas fa-trash-alt"></i></button></span></div>`;
       doneList.appendChild(todo);
     }
   });
 };
-const savePost = content =>
-  axios
-    .post(`${site}`, {
-      text: content,
-    })
-    .then(response => console.log(response));
 
+// API GET
 const getTodos = async url => {
+  // making sure there no items in DOM list
+  doneList.innerHTML = '';
+  todoList.innerHTML = '';
   const res = await axios.get(url);
   const { todos } = res.data;
-
-  insertList(todos);
+  const sortedTodos = await todos.sort((a, b) =>
+    a.completedAt > b.completedAt ? -1 : 1
+  );
+  insertList(sortedTodos);
+};
+// API POST
+const savePost = async content => {
+  try {
+    await axios.post(`${site}`, {
+      text: content,
+    });
+    await getTodos(site);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// API PATCH
+const changeToDone = async elemId => {
+  try {
+    await axios.patch(`${site}${elemId}`, {
+      completed: true,
+    });
+    await getTodos(site);
+  } catch (error) {
+    console.log(console.error);
+  }
+};
+// API DELETE
+const deleteToDo = async elemID => {
+  try {
+    const response = await axios.delete(`${site}${elemID}`);
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-getTodos(`${site}`);
+// to start page loading
+getTodos(site);
 
 // Event Listeners
 todoForm.addEventListener('submit', e => {
   e.preventDefault();
 });
 buttonSave.addEventListener('click', () => {
-  const content = todoText.value;
-  console.log(content);
-  savePost(content);
-  getTodos(site);
+  savePost(todoText.value);
+  todoText.value = '';
 });
 
-// const getTodos = () =>
-//   fetch(`${cors}${site}`)
-//     .then(response => response.json())
-//     .then(data => data.todos.forEach(element => console.log(element)));
+todoList.addEventListener('click', e => {
+  const elem = e.target.closest('.finish-btn');
+  if (elem) {
+    const elementId = elem.parentElement.parentElement.parentElement.getAttribute(
+      'data-id'
+    );
+    changeToDone(elementId.substr(1).slice(0, -1));
+  }
+});
 
-// getTodos();
-
-// const getTodos = async url => {
-//   const res = await fetch(url);
-//   const data = await res.json();
-//   // console.log(data.todos[0]._id);
-//   insertList(data.todos);
-// };
+doneList.addEventListener('click', e => {
+  const elem = e.target.closest('.trash-btn');
+  if (elem) {
+    const elementId = elem.parentElement.parentElement.parentElement.getAttribute(
+      'data-id'
+    );
+    deleteToDo(elementId.substr(1).slice(0, -1));
+    getTodos(site);
+  }
+});
