@@ -50,13 +50,6 @@ header {
   padding-bottom: 12px;
   border-bottom: 2px solid;
   padding-top: 12px;
-
-  /* text-align: center;
-    padding-bottom: 12px;
-    border-bottom: 2px solid;
-    padding-top: 12px;
-    position: fixed;
-    width: 50%; */
 }
 
 .in-progress-container h2 {
@@ -152,7 +145,6 @@ li > div {
 li > div > span {
   margin-left: 30px;
   font-size: 14px;
-  font-style: unset;
   font-style: italic;
   font-weight: 800;
 }

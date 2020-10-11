@@ -1,5 +1,4 @@
 const site = 'https://segovia-list-todo.herokuapp.com/todos/';
-
 const todoList = document.getElementById('in-progress-list');
 const doneList = document.getElementById('done');
 
